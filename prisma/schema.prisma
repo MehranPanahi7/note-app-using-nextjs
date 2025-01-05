@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model note_actions {
+  action_id        Int                      @id @default(autoincrement())
+  note_id          Int
+  user_id          Int
+  action_type      note_actions_action_type
+  action_timestamp DateTime?                @default(now()) @db.DateTime(0)
+  notes            notes                    @relation(fields: [note_id], references: [note_id], onDelete: Cascade, onUpdate: Restrict, map: "note_actions_ibfk_1")
+  users            users                    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Restrict, map: "note_actions_ibfk_2")
+
+  @@index([note_id], map: "note_id")
+  @@index([user_id], map: "user_id")
+}
+
+model notes {
+  note_id      Int            @id @default(autoincrement())
+  user_id      Int
+  note_title   String         @db.VarChar(255)
+  note_content String         @db.Text
+  created_at   DateTime?      @default(now()) @db.DateTime(0)
+  updated_at   DateTime?      @default(now()) @db.DateTime(0)
+  note_actions note_actions[]
+  users        users          @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Restrict, map: "notes_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model users {
+  user_id       Int            @id @default(autoincrement())
+  username      String         @unique(map: "username") @db.VarChar(255)
+  email         String         @unique(map: "email") @db.VarChar(255)
+  password_hash String         @db.VarChar(255)
+  token         String?        @db.VarChar(255)
+  role          users_role?    @default(user)
+  created_at    DateTime?      @default(now()) @db.DateTime(0)
+  updated_at    DateTime?      @default(now()) @db.DateTime(0)
+  note_actions  note_actions[]
+  notes         notes[]
+}
+
+enum note_actions_action_type {
+  created
+  updated
+  deleted
+}
+
+enum users_role {
+  admin
+  user
+}
