@@ -12,7 +12,7 @@ export default async function GetAllNotesHandler(
     if (!token) return res.status(400).json({ message: "No Token Privided" });
     try {
       const decodedToken: any = verifyToken(token);
-      const user_id = decodedToken.user_id;
+      const user_id = decodedToken.user.user_id;
       if (!user_id)
         return res.status(401).json({ message: "کاربر وارد نشده است." });
 

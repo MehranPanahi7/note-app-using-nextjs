@@ -25,7 +25,7 @@ export function generateToken(
       },
     },
     secret,
-    { expiresIn: "7h" }
+    { expiresIn: "2h" }
   );
 }
 

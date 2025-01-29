@@ -41,6 +41,7 @@ export const userLogin = createAsyncThunk<
   try {
     const res = await fetch("/api/routes/auth/login", {
       method: "POST",
+      credentials: "include", // ارسال کوکی‌ها با درخواست
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     });

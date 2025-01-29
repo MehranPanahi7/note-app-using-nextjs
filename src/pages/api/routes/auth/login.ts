@@ -37,14 +37,20 @@ export default async function LoginHandler(
       res.setHeader(
         "Set-Cookie",
         serialize("authToken", token, {
-          httpOnly: true, // Access from server only
-          secure: process.env.NODE_ENV === "production", // Active only on production envoiroment
-          sameSite: "strict", // Limited to this Domain
-          maxAge: 7200, // Expires time
-          path: "/", // Access path
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+          maxAge: 7200,
+          path: "/",
         })
       );
-      res.status(200).json({ message: "کاربر با موفقیت وارد شد." });
+      res
+        .status(200)
+        .json({
+          message: "کاربر با موفقیت وارد شد.",
+          token: token,
+          user: user.username,
+        });
     } catch (error) {
       console.log("Internal Server Error", error);
       return res.status(500).json({ message: "خطای سرور رخ داده است." });
