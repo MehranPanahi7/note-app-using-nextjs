@@ -21,7 +21,7 @@ export default async function DeleteNoteHandler(
 
     try {
       const decodedToken: any = verifyToken(token);
-      const user_id = decodedToken.user_id;
+      const user_id = decodedToken.user.user_id;
       if (!user_id)
         return res.status(403).json({ message: "دسترسی غیر مجازاست." });
 

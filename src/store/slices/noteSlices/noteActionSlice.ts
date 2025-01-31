@@ -60,12 +60,12 @@ export const removeNote = createAsyncThunk<
   if (!token) return rejectWithValue("ابتدا باید وارد شوید.");
   try {
     const res = await fetch("/api/routes/notes/note-actions/delete-note", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(note_id),
+      body: JSON.stringify({ note_id }),
     });
     if (res.ok) {
       return await res.json();
